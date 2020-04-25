@@ -29,6 +29,10 @@ import com.android.internal.util.zenx.ThemesUtils;
 
 import android.content.om.IOverlayManager;
 import android.os.ServiceManager;
+import android.content.om.OverlayInfo;
+import android.graphics.Color;
+import android.os.SystemProperties;
+import android.os.RemoteException;
 
 import com.android.settings.R;
 import com.android.settings.dashboard.DashboardFragment;
@@ -42,7 +46,9 @@ import com.android.internal.logging.nano.MetricsProto;
 
 import com.zenx.support.preferences.SystemSettingListPreference;
 import com.zenx.support.preferences.CustomSeekBarPreference;
+import com.zenx.support.colorpicker.ColorPickerPreference;
 
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,6 +60,9 @@ public class Ui extends DashboardFragment implements Preference.OnPreferenceChan
     private static final String ZENHUB_ICON_SIZE = "zenhub_icon_size";
     private static final String CUSTOM_STATUSBAR_HEIGHT = "custom_statusbar_height";
     private static final String UI_STYLE = "ui_style";
+    private static final String ACCENT_PRESET = "accent_preset";
+    private static final String ACCENT_COLOR = "accent_color";
+    private static final String ACCENT_COLOR_PROP = "persist.sys.theme.accentcolor";
 
     private SystemSettingListPreference mStatusbarDualRowMode;
     private SystemSettingListPreference mDualRowDataUsageMode;
@@ -61,6 +70,8 @@ public class Ui extends DashboardFragment implements Preference.OnPreferenceChan
     private SystemSettingListPreference mZenHubIconSize;
     private CustomSeekBarPreference mCustomStatusbarHeight;
     private ListPreference mUIStyle;
+    private ListPreference mAccentPreset;
+    private ColorPickerPreference mThemeColor;
 
     private IOverlayManager mOverlayManager;
 
@@ -136,6 +147,21 @@ public class Ui extends DashboardFragment implements Preference.OnPreferenceChan
                 return false;
             }
        });
+
+        mOverlayManager = IOverlayManager.Stub
+                .asInterface(ServiceManager.getService(Context.OVERLAY_SERVICE));
+        mThemeColor = (ColorPickerPreference) findPreference(ACCENT_COLOR);
+        String colorVal = SystemProperties.get(ACCENT_COLOR_PROP, "-1");
+        try {
+            int color = "-1".equals(colorVal)
+                    ? Color.WHITE
+                    : Color.parseColor("#" + colorVal);
+            mThemeColor.setNewPreviewColor(color);
+        }
+        catch (Exception e) {
+            mThemeColor.setNewPreviewColor(Color.WHITE);
+        }
+        mThemeColor.setOnPreferenceChangeListener(this);
 
         handleDataUsePreferences();
         handleZenHubIconPreferences();
@@ -251,9 +277,46 @@ public class Ui extends DashboardFragment implements Preference.OnPreferenceChan
             Settings.System.putIntForUser(getContentResolver(),
                     Settings.System.CUSTOM_STATUSBAR_HEIGHT, value, UserHandle.USER_CURRENT);
             return true;
+       } else if (preference == mThemeColor) {
+            int color = (Integer) newValue;
+            String hexColor = String.format("%08X", (0xFFFFFFFF & color));
+            SystemProperties.set(ACCENT_COLOR_PROP, hexColor);
+            checkColorPreset(hexColor);
+            try {
+                 mOverlayManager.reloadAndroidAssets(UserHandle.USER_CURRENT);
+                 mOverlayManager.reloadAssets("com.android.settings", UserHandle.USER_CURRENT);
+                 mOverlayManager.reloadAssets("com.android.systemui", UserHandle.USER_CURRENT);
+            } catch (RemoteException ignored) {
+            }
+         } else if (preference == mAccentPreset) {
+            String value = (String) newValue;
+            int index = mAccentPreset.findIndexOfValue(value);
+            mAccentPreset.setSummary(mAccentPreset.getEntries()[index]);
+            SystemProperties.set(ACCENT_COLOR_PROP, value);
+            try {
+                 mOverlayManager.reloadAndroidAssets(UserHandle.USER_CURRENT);
+                 mOverlayManager.reloadAssets("com.android.settings", UserHandle.USER_CURRENT);
+                 mOverlayManager.reloadAssets("com.android.systemui", UserHandle.USER_CURRENT);
+            } catch (RemoteException ignored) {
+            }
         }
         return false;
     }
+
+    private void checkColorPreset(String colorValue) {
+        List<String> colorPresets = Arrays.asList(
+                getResources().getStringArray(R.array.accent_presets_values));
+        if (colorPresets.contains(colorValue)) {
+            mAccentPreset.setValue(colorValue);
+            int index = mAccentPreset.findIndexOfValue(colorValue);
+            mAccentPreset.setSummary(mAccentPreset.getEntries()[index]);
+        }
+        else {
+            mAccentPreset.setSummary(
+                    getResources().getString(R.string.custom_string));
+        }
+    }
+
 
     private String getOverlayName(String[] overlays) {
             String overlayName = null;
