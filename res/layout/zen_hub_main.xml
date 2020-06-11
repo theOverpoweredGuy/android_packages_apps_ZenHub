@@ -49,6 +49,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginBottom="8dp"
+                    android:tint="?android:attr/colorAccent"
                     android:src="@drawable/ic_settings_quicksettings" />
 
                 <TextView
@@ -96,6 +97,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginBottom="8dp"
+                    android:tint="?android:attr/colorAccent"
                     android:src="@drawable/ic_settings_notifications" />
 
                 <TextView
@@ -143,6 +145,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginBottom="8dp"
+                    android:tint="?android:attr/colorAccent"
                     android:src="@drawable/ic_settings_lockscreen" />
 
                 <TextView
@@ -190,6 +193,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginBottom="8dp"
+                    android:tint="?android:attr/colorAccent"
                     android:src="@drawable/ic_settings_navigation" />
 
                 <TextView
@@ -237,6 +241,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginBottom="8dp"
+                    android:tint="?android:attr/colorAccent"
                     android:src="@drawable/ic_settings_screen" />
 
                 <TextView
@@ -284,6 +289,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginBottom="8dp"
+                    android:tint="?android:attr/colorAccent"
                     android:src="@drawable/ic_settings_misc" />
 
                 <TextView
@@ -330,6 +336,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginBottom="8dp"
+                    android:tint="?android:attr/colorAccent"
                     android:src="@drawable/ic_settings_device_parts" />
 
                 <TextView
@@ -376,6 +383,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginBottom="8dp"
+                    android:tint="?android:attr/colorAccent"
                     android:src="@drawable/ic_settings_about" />
 
                 <TextView
