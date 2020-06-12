@@ -51,6 +51,8 @@ import com.zenx.zen.hub.fragments.linksdevs.tabs.Devs;
 public class LinksDevsController extends SettingsPreferenceFragment implements
        Preference.OnPreferenceChangeListener {
 
+    private static final String TAG = "LinksDevsController";
+
     private MenuItem mMenuItem;
     private Context mContext;
 
@@ -159,20 +161,5 @@ public class LinksDevsController extends SettingsPreferenceFragment implements
     @Override
     public int getMetricsCategory() {
         return MetricsProto.MetricsEvent.ZENX_SETTINGS;
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // do nothing
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case 0:
-                return true;
-            default:
-                return false;
-        }
     }
 }

@@ -20,6 +20,7 @@ package com.zenx.zen.hub;
 import com.android.internal.logging.nano.MetricsProto;
 
 import android.app.Activity;
+
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.Toast;
 import android.view.View;
+import android.view.MenuItem;
 import android.util.Log;
 
 import android.view.LayoutInflater;
@@ -45,6 +47,9 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.ComponentName;
 
+import com.android.settings.R;
+import com.android.settings.SettingsPreferenceFragment;
+
 import com.zenx.zen.hub.fragments.statusbarquicksettings.StatusbarQuicksettingsController;
 import com.zenx.zen.hub.fragments.screenanimation.UserInterfaceController;
 import com.zenx.zen.hub.fragments.noficationheadsup.NotificationsHeadsUpSettingsController;
@@ -53,7 +58,10 @@ import com.zenx.zen.hub.fragments.lockscreenambient.LockscreenAmbientController;
 import com.zenx.zen.hub.fragments.linksdevs.LinksDevsController;
 import com.zenx.zen.hub.fragments.buttons.ButtonsPowerMenuVolumeButtonController;
 
-public class ZenHub extends Fragment implements View.OnClickListener {
+import com.zenx.zen.hub.Tags;
+
+public class ZenHub extends SettingsPreferenceFragment implements View.OnClickListener, Preference.OnPreferenceChangeListener {
+    private static final String TAG = "ZenHub";
 
     private static Intent mDevicePartsIntent;
 
@@ -67,17 +75,19 @@ public class ZenHub extends Fragment implements View.OnClickListener {
     MaterialCardView mDevicePartsCard;
     MaterialCardView mRomInfoCard;
 
+    private FragmentManager mFragmentManager;
+    private FragmentTransaction mFragmentTransaction;
+    private Fragment mFragment;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.zen_hub_main, container, false);
-    }
+        View view = inflater.inflate(R.layout.zen_hub_main, container, false);
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        mFragmentManager = getActivity().getSupportFragmentManager();
+        lockCurrentOrientation(getActivity());
 
         getActivity().setTitle("ZenHub");
-
+        
         mDevicePartsIntent = new Intent().setComponent(new ComponentName(
             getContext().getResources().getString(com.android.internal.R.string.config_device_parts_package_name), getContext().getResources().getString(com.android.internal.R.string.config_device_parts_package_activity)));
 
@@ -104,63 +114,85 @@ public class ZenHub extends Fragment implements View.OnClickListener {
 
         mRomInfoCard = (MaterialCardView) view.findViewById(R.id.rom_info_card);
         mRomInfoCard.setOnClickListener(this);
+
+        return view;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
     }
 
     @Override
     public void onClick(View view) {
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
         switch (view.getId()) {
             case R.id.statusbar_card:
-                StatusbarQuicksettingsController statusfragment = new StatusbarQuicksettingsController();
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                transaction.replace(this.getId(), statusfragment);
-                transaction.commit();
+                loadFragment(Tags.STATUSBAR_QUICKSETTINGS_FRAGMENT,true,null,new StatusbarQuicksettingsController());
+                // transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 break;
             case R.id.notification_card:
-                NotificationsHeadsUpSettingsController notifcationfragment = new NotificationsHeadsUpSettingsController();
-                FragmentTransaction transaction1 = getFragmentManager().beginTransaction();
-                transaction1.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                transaction1.replace(this.getId(), notifcationfragment);
-                transaction1.commit();
+                loadFragment("NotificationsHeadsUpSettingsController",true,null,new NotificationsHeadsUpSettingsController());
                 break;
             case R.id.lockscreen_card:
                 LockscreenAmbientController lockscreenfragment = new LockscreenAmbientController();
-                FragmentTransaction transaction2 = getFragmentManager().beginTransaction();
-                transaction2.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                transaction2.replace(this.getId(), lockscreenfragment);
-                transaction2.commit();
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                transaction.replace(this.getId(), lockscreenfragment);
+                transaction.commit();
                 break;
             case R.id.screen_card:
                 UserInterfaceController screenfragment = new UserInterfaceController();
-                FragmentTransaction transaction3 = getFragmentManager().beginTransaction();
-                transaction3.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                transaction3.replace(this.getId(), screenfragment);
-                transaction3.commit();
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                transaction.replace(this.getId(), screenfragment);
+                transaction.commit();
                 break;
             case R.id.misc_card:
                 MiscBatteryController miscfragment = new MiscBatteryController();
-                FragmentTransaction transaction4 = getFragmentManager().beginTransaction();
-                transaction4.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                transaction4.replace(this.getId(), miscfragment);
-                transaction4.commit();
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                transaction.replace(this.getId(), miscfragment);
+                transaction.commit();
                 break;
             case R.id.rom_info_card:
                 LinksDevsController rominfofragment = new LinksDevsController();
-                FragmentTransaction transaction5 = getFragmentManager().beginTransaction();
-                transaction5.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                transaction5.replace(this.getId(), rominfofragment);
-                transaction5.commit();
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                transaction.replace(this.getId(), rominfofragment);
+                transaction.commit();
                 break;
             case R.id.navigation_card:
                 ButtonsPowerMenuVolumeButtonController navigationfragment = new ButtonsPowerMenuVolumeButtonController();
-                FragmentTransaction transaction6 = getFragmentManager().beginTransaction();
-                transaction6.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                transaction6.replace(this.getId(), navigationfragment);
-                transaction6.commit();
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                transaction.replace(this.getId(), navigationfragment);
+                transaction.commit();
                 break;
             case R.id.device_parts_card:
                 getActivity().startActivity(mDevicePartsIntent);
                 break;
+        }
+    }
+
+    private void loadFragment(String tag, boolean addToStack, Bundle bundle, Fragment setFragment) {
+        mFragmentTransaction = mFragmentManager.beginTransaction();
+        mFragment = setFragment;
+
+        if (addToStack) {
+            if (bundle != null)
+                mFragment.setArguments(bundle);
+            mFragmentTransaction.replace(R.id.fragment_container, mFragment, tag);
+            mFragmentTransaction.addToBackStack(tag).commit();
+
+        } else {
+            if (bundle != null)
+                mFragment.setArguments(bundle);
+            mFragmentTransaction.replace(R.id.fragment_container, mFragment, tag);
+            mFragmentTransaction.commit();
         }
     }
 
@@ -195,5 +227,20 @@ public class ZenHub extends Fragment implements View.OnClickListener {
                 break;
         }
         activity.setRequestedOrientation(frozenRotation);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    public boolean onPreferenceChange(Preference preference, Object objValue) {
+        final String key = preference.getKey();
+        return true;
     }
 }

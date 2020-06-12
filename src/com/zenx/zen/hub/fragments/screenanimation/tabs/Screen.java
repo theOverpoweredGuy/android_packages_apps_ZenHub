@@ -49,6 +49,8 @@ import java.util.List;
 public class Screen extends SettingsPreferenceFragment implements
     Preference.OnPreferenceChangeListener {
 
+    private static final String TAG = "Screen";
+
     private static final String KEY_FORCE_FULLSCREEN = "display_cutout_force_fullscreen_settings";
     private static final String KEY_ASPECT_RATIO_APPS_ENABLED = "aspect_ratio_apps_enabled";
     private static final String KEY_ASPECT_RATIO_APPS_LIST = "aspect_ratio_apps_list";

@@ -45,6 +45,8 @@ import java.util.List;
 
 public class Animations extends SettingsPreferenceFragment  implements Preference.OnPreferenceChangeListener {
 
+    private static final String TAG = "Animations";
+
     private static final String PREF_TILE_ANIM_STYLE = "qs_tile_animation_style";
     private static final String PREF_TILE_ANIM_DURATION = "qs_tile_animation_duration";
     private static final String PREF_TILE_ANIM_INTERPOLATOR = "qs_tile_animation_interpolator";

@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Ui extends DashboardFragment {
-    private static final String TAG = "DisplaySettings";
+    private static final String TAG = "Ui";
 
     @Override
     public int getMetricsCategory() {

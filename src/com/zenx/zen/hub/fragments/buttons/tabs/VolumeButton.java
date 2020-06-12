@@ -54,14 +54,14 @@ import java.util.List;
 public class VolumeButton extends SettingsPreferenceFragment implements
     Preference.OnPreferenceChangeListener {
 
+    public static final String TAG = "VolumeButton";
+
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         addPreferencesFromResource(R.xml.zen_volume_button);
         PreferenceScreen prefSet = getPreferenceScreen();
         final PreferenceScreen prefScreen = getPreferenceScreen();
-
-
     }
 
     @Override

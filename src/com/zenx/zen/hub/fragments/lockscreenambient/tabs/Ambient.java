@@ -39,7 +39,7 @@ import com.zenx.support.preferences.SystemSettingSwitchPreference;
 public class Ambient extends SettingsPreferenceFragment implements
         Preference.OnPreferenceChangeListener {
 
-   public static final String TAG = "EdgeLight";
+    public static final String TAG = "Amvient";
     private static final String AMBIENT_LIGHT_COLOR = "ambient_light_color";
     private static final String AMBIENT_LIGHT_CUSTOM_COLOR = "ambient_light_custom_color";
     private static final String AMBIENT_LIGHT_DURATION = "ambient_light_duration";

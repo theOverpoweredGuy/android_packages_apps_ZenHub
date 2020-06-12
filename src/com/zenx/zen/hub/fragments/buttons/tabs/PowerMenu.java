@@ -43,7 +43,7 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PowerMenu extends SettingsPreferenceFragment     
+public class PowerMenu extends SettingsPreferenceFragment
                 implements Preference.OnPreferenceChangeListener {
 
     public static final String TAG = "PowerMenu";

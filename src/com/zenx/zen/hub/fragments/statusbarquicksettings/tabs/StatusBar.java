@@ -62,6 +62,8 @@ import androidx.preference.ListPreference;
 public class StatusBar extends SettingsPreferenceFragment implements
     Preference.OnPreferenceChangeListener {
 
+        private static final String TAG = "StatusbarController";
+
      private static final String CLOCK_DATE_AUTO_HIDE_HDUR = "status_bar_clock_auto_hide_hduration";
     private static final String CLOCK_DATE_AUTO_HIDE_SDUR = "status_bar_clock_auto_hide_sduration";
     private static final String KEY_CARRIER_LABEL = "status_bar_show_carrier";

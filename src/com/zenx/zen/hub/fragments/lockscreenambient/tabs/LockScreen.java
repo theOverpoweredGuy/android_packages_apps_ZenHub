@@ -48,6 +48,8 @@ import com.zenx.support.preferences.SwitchPreference;
 public class LockScreen extends SettingsPreferenceFragment implements
         Preference.OnPreferenceChangeListener {
 
+    private static final String TAG = "LockScreen";
+
     private static final String LOCKSCREEN_VISUALIZER_ENABLED = "lockscreen_visualizer_enabled";
     private static final String SYSUI_KEYGUARD_SHOW_BATTERY_BAR = "sysui_keyguard_show_battery_bar";
     private static final String FOD_ANIMATION_PREF = "fod_recognizing_animation";

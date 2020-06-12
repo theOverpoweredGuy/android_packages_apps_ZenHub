@@ -51,6 +51,8 @@ import com.zenx.zen.hub.fragments.lockscreenambient.tabs.Ambient;
 public class LockscreenAmbientController extends SettingsPreferenceFragment implements
        Preference.OnPreferenceChangeListener {
 
+    private static final String TAG = "LockscreenAmbientController";
+
     private MenuItem mMenuItem;
     private Context mContext;
 
@@ -161,18 +163,4 @@ public class LockscreenAmbientController extends SettingsPreferenceFragment impl
         return MetricsProto.MetricsEvent.ZENX_SETTINGS;
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // do nothing
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case 0:
-                return true;
-            default:
-                return false;
-        }
-    }
 }
