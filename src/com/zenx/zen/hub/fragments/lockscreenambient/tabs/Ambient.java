@@ -15,6 +15,7 @@
  */
 package com.zenx.zen.hub.fragments.lockscreenambient.tabs;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.UserHandle;
 import android.provider.Settings;
@@ -24,6 +25,8 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.content.pm.ResolveInfo;
+import android.content.Intent;
+import android.net.Uri;
 
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
@@ -54,8 +57,10 @@ public class Ambient extends SettingsPreferenceFragment implements
     private static final String SYNTHOS_AMBIENT_TEXT_TYPE_COLOR = "synthos_ambient_text_type_color";
     private static final String SYNTHOS_AMBIENT_TEXT_COLOR = "synthos_ambient_text_color";
     private static final String FILE_AMBIENT_SELECT = "file_ambient_select";
+    private static final String FILE_AMBIENT_VIDEO_SELECT = "file_ambient_video_select";
 
     private static final int REQUEST_PICK_IMAGE = 0;
+    private static final int REQUEST_PICK_VIDEO = 1;
 
     private SystemSettingSwitchPreference mEdgeLightAlways;
     private ListPreference mEdgeLightColorMode;
@@ -70,6 +75,7 @@ public class Ambient extends SettingsPreferenceFragment implements
     private ColorPickerPreference mAmbientTextColor;
 
     private Preference mAmbientImage;
+     private Preference mAmbientVideo;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -115,7 +121,7 @@ public class Ambient extends SettingsPreferenceFragment implements
 
         // set ambient text alignment
         mAmbientTextAlign = (ListPreference) findPreference(SYNTHOS_AMBIENT_TEXT_ALIGNMENT);
-        int align = Settings.System.getInt(resolver,
+        int align = Settings.System.getInt(getContentResolver(),
                 Settings.System.SYNTHOS_AMBIENT_TEXT_ALIGNMENT, 3);
         mAmbientTextAlign.setValue(String.valueOf(align));
         mAmbientTextAlign.setSummary(mAmbientTextAlign.getEntry());
@@ -148,6 +154,7 @@ public class Ambient extends SettingsPreferenceFragment implements
         mAmbientTextColor.setNewPreviewColor(ambientTextColor);
 
         mAmbientImage = findPreference(FILE_AMBIENT_SELECT);
+        mAmbientVideo = findPreference(FILE_AMBIENT_VIDEO_SELECT);
 
     }
 
@@ -157,6 +164,11 @@ public class Ambient extends SettingsPreferenceFragment implements
             Intent intent = new Intent(Intent.ACTION_PICK);
             intent.setType("image/*");
             startActivityForResult(intent, REQUEST_PICK_IMAGE);
+            return true;
+         } else if (preference == mAmbientVideo) {
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setType("video/*");
+            startActivityForResult(intent, REQUEST_PICK_VIDEO);
             return true;
         }
         return super.onPreferenceTreeClick(preference);
@@ -201,7 +213,7 @@ public class Ambient extends SettingsPreferenceFragment implements
             return true;
          } else if (preference == mAmbientText) {
             String value = (String) newValue;
-            Settings.System.putString(resolver,
+            Settings.System.putString(getContentResolver(),
                     Settings.System.SYNTHOS_AMBIENT_TEXT_STRING, value);
             return true;
         } else if (preference == mAmbientTextAlign) {
@@ -235,7 +247,7 @@ public class Ambient extends SettingsPreferenceFragment implements
             Settings.System.putInt(getContentResolver(),
                     Settings.System.SYNTHOS_AMBIENT_TEXT_COLOR, intHex);
             return true;
-        }
+          }
         return false;
     }
 
@@ -247,6 +259,12 @@ public class Ambient extends SettingsPreferenceFragment implements
             }
             final Uri imageUri = result.getData();
             Settings.System.putString(getContentResolver(), Settings.System.SYNTHOS_AMBIENT_CUSTOM_IMAGE, imageUri.toString());
+        } else if (requestCode == REQUEST_PICK_VIDEO) {
+            if (resultCode != Activity.RESULT_OK) {
+                return;
+            }
+            final Uri videoUri = result.getData();
+            Settings.System.putString(getContentResolver(), Settings.System.SYNTHOS_AMBIENT_CUSTOM_VIDEO, videoUri.toString());
         }
     }
 
