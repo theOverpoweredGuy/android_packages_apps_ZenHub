@@ -118,7 +118,7 @@
             android:key="synthos_ambient_text_string"
             android:title="@string/synthos_ambient_text_string_title"
             android:dependency="synthos_ambient_text"
-            android:defaultValue="#SynthOS" />
+            android:defaultValue="#ZenX-OS" />
 
         <ListPreference
             android:key="synthos_ambient_text_font"

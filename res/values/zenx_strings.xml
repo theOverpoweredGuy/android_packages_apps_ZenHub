@@ -554,7 +554,7 @@
     <string name="lock_clock_font_dumbledor">Dumbledor</string>
     <string name="lock_clock_font_phantombold">PhantomBold</string>
     <string name="lockscreen_info_title ">Info widget</string>
-    <string name="lockscreen_clock_title ">Clock widget</string>
+    <string name="lockscreen_clock_title ">Clock widget (Default clok only)</string>
     <string name="lockscreen_info_summary">Info widget styling</string>
     <string name="lockscreen_clock_summary">Clock widget styling</string>
     <string name="lock_date_font_dialog_title">Select lock date font</string>
@@ -1585,7 +1585,7 @@
     <string name="volume_panel_alignment_center">Center</string>
     <string name="volume_panel_alignment_bottom">Bottom</string>
 
-      <string name="synthos_ambient_text_category_title">Ambient-Synth</string>
+      <string name="synthos_ambient_text_category_title">Ambient extended</string>
     <string name="synthos_ambient_text_title">Ambient Text</string>
     <string name="synthos_ambient_text_summary">Show Ambient Text in AoD</string>
     <string name="synthos_ambient_text_animation_title">Ambient Text Animation</string>
