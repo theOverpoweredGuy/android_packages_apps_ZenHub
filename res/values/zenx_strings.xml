@@ -1655,12 +1655,4 @@
     <string name="accent_preset_36">XboxGreen</string>
     <string name="accent_preset_37">XiaomiOrange</string>
     <string name="accent_preset_title">Accent preset</string>
-
-    <string name="synthos_ambient_video_title">Ambient Video</string>
-    <string name="file_video_select_title">Select Video</string>
-    <string name="file_video_select_summary">Select a video from storage</string>
-    <string name="synthos_ambient_video_looping_title">Set Video Loop</string>
-    <string name="ambient_notification_light_color_mode_accent">System accent color</string>
-    <string name="ambient_notification_light_color_mode_wall">Wallpaper color</string>
-    <string name="ambient_notification_light_color_mode_custom">Custom color</string>
 </resources>
