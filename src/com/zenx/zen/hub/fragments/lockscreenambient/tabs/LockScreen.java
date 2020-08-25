@@ -87,13 +87,15 @@ public class LockScreen extends SettingsPreferenceFragment implements
         PackageManager packageManager = getPackageManager();
 
         mFODAnimationEnabled = (SystemSettingSwitchPreference) findPreference(FOD_ANIMATION_PREF);
+        if (!packageManager.hasSystemFeature(LineageContextConstants.Features.FOD)) {
+            mFODAnimationEnabled.setVisible(false);
+        }
 
 
         mFODCategory = (PreferenceCategory) findPreference(FOD_CATEGORY);
 
         if (!packageManager.hasSystemFeature(LineageContextConstants.Features.FOD)) {
             mFODAnimationEnabled.setVisible(false);
-            mScreenOffFOD.setVisible(false);
             prefSet.removePreference(mFODCategory);
         }
 
