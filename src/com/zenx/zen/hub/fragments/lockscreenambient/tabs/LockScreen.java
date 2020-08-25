@@ -129,11 +129,6 @@ public class LockScreen extends SettingsPreferenceFragment implements
             Settings.System.putInt(getContentResolver(),
 		            SYSUI_KEYGUARD_SHOW_BATTERY_BAR, value ? 1 : 0);
             return true;
-        } else if (preference == mScreenOffFOD) {
-            int mScreenOffFODValue = (Boolean) newValue ? 1 : 0;
-            Settings.System.putInt(resolver, Settings.System.SCREEN_OFF_FOD, mScreenOffFODValue);
-            Settings.Secure.putInt(resolver, Settings.Secure.DOZE_ALWAYS_ON, mScreenOffFODValue);
-            return true;
         }
         return false;
     }
